@@ -55,7 +55,7 @@ def check_repo_exists(git_data, device):
     matches = filter(lambda x: re.match(re_match, x), git_data)
     if len(matches) != 1:
         raise Exception("{device} not found,"
-                        "exiting roomservice".format(device=device))
+                        "exiting roomservice".format(device=omni_X00TD))
 
     return git_data[matches[0]]
 
@@ -78,7 +78,7 @@ def search_gerrit_for_device(device):
         # Skip silly gerrit "header"
         response.readline()
         git_data = json.load(response)
-        device_data = check_repo_exists(git_data, device)
+        device_data = check_repo_exists(git_data, omni_X00TD)
         print("found the {} device repo".format(device))
         return device_data
 
@@ -320,7 +320,7 @@ def check_device_exists(device):
 def fetch_device(device):
     if check_device_exists(device):
         print("WARNING: Trying to fetch a device that's already there")
-    git_data = search_gerrit_for_device(device)
+    git_data = search_gerrit_for_device(omni_X00TD)
     if git_data is not None:
         device_url = git_data['id']
         device_dir = parse_device_directory(device_url, device)
@@ -352,5 +352,5 @@ if __name__ == '__main__':
         deps_only = False
 
     if not deps_only:
-        fetch_device(device)
+        fetch_device(omni_X00TD)
     fetch_dependencies(device)
